@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Login</title>
     <style>
-        /* Reset default browser styles */
+        
         * {
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

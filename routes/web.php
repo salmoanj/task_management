@@ -14,7 +14,7 @@ Route::post('/register', [AuthController::class, 'register'])->name('register.po
 
 
 //admin route
-Route::middleware(['auth', 'admin'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/admin/tasks', [AdminController::class, 'index'])->name('admin.tasks');
     Route::post('/admin/tasks', [AdminController::class, 'store'])->name('admin.tasks.store');
@@ -24,7 +24,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 
 // employee route
-Route::middleware(['auth', 'employee'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/employee/tasks', [EmployeeController::class, 'index'])->name('employee.tasks');
     Route::post('/employee/tasks/{task}/complete', [EmployeeController::class, 'complete'])->name('employee.tasks.complete');
 });
