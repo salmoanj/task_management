@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+    @if(auth()->user()->hasPermissionTo('add-user'))
     <title>Admin Panel</title>
+    @endif
+     @if(auth()->user()->hasPermissionTo('view-task'))
+    <title>Employee Panel</title>
+     @endif
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css');
@@ -46,15 +51,14 @@
     <div class="admin-sidebar">
         <h3>Admin Panel</h3>
         <ul>
-            @if(Auth::check() && Auth::user()->can('add-user'))
+            @if(auth()->user()->hasPermissionTo('add-user'))
                 <li><a href="{{ route('admin.dashboard') }}"><i class="fas fa-home"></i> Dashboard</a></li>
                 <li><a href="{{ route('admin.tasks') }}"><i class="fas fa-tasks"></i> Manage Tasks</a></li>
                 <li><a href="{{ route('admin.users') }}"><i class="fas fa-users"></i> Manage Users</a></li>
                 <li><a href="{{ route('admin.roles') }}"><i class="fas fa-user-shield"></i> Manage Roles</a></li>
                 <li><a href="{{ route('admin.permission') }}"><i class="fas fa-lock"></i> Manage Permission</a></li>
             @endif
-
-            @if(Auth::check() && Auth::user()->can('view-task'))
+             @if(auth()->user()->hasPermissionTo('view-task'))
                 <li><a href="{{ route('employee.tasks') }}"><i class="fas fa-tasks"></i> My Tasks</a></li>
             @endif
 

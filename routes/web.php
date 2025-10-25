@@ -16,7 +16,7 @@ Route::get('/register', [AuthController::class, 'showRegister'])->name('register
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 
 
-//admin route
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/admin/tasks', [AdminController::class, 'index'])->name('admin.tasks');
@@ -42,7 +42,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-// employee route
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/employee/tasks', [EmployeeController::class, 'index'])->name('employee.tasks');
     Route::post('/employee/tasks/{task}/complete', [EmployeeController::class, 'complete'])->name('employee.tasks.complete');

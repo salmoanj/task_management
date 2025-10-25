@@ -101,7 +101,21 @@
 
 <div class="content">
     <h2>All Tasks</h2>
-    <table>
+
+    <form method="GET" action="{{ route('admin.dashboard') }}" style="margin-bottom:20px;">
+        <select name="user_id">
+            <option value="">-- All Users --</option>
+            @foreach($users as $user)
+                <option value="{{ $user->id }}" {{ request('user_id') == $user->id ? 'selected' : '' }}>
+                    {{ $user->name }}
+                </option>
+            @endforeach
+        </select>
+        <button>Filter</button>
+    </form>
+
+
+    <table border="1" cellpadding="8">
         <tr>
             <th>Name</th>
             <th>User</th>
@@ -110,6 +124,7 @@
             <th>Deadline</th>
             <th>Action</th>
         </tr>
+
         @foreach($tasks as $task)
         <tr>
             <td>{{ $task->name }}</td>
@@ -134,3 +149,4 @@
         @endforeach
     </table>
 </div>
+

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Permission;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Http\Request;
 
 class PermissionController extends Controller
@@ -21,10 +21,16 @@ class PermissionController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate(['name'=>'required|unique:permissions']);
-        Permission::create(['name'=>$request->name]);
+        $request->validate([
+            'name' => 'required|unique:permissions,name'
+        ]);
 
-        return redirect()->route('admin.permission')->with('success', 'Permission created successfully');
+        Permission::create([
+            'name' => $request->name,
+            'guard_name' => 'web' 
+        ]);
+
+        return redirect()->route('admin.permission')->with('success', 'Permission created successfully.');
     }
 
     public function edit(Permission $permission)
@@ -32,17 +38,23 @@ class PermissionController extends Controller
         return view('admin.permissions.edit', compact('permission'));
     }
 
-    public function update(Request $request, Permission $permission)
+   public function update(Request $request, Permission $permission)
     {
-        $permission->update(['name'=>$request->name]);
-        return redirect()->route('admin.permission')->with('success', 'Permission updated successfully');
+        $request->validate([
+            'name' => 'required|unique:permissions,name,' . $permission->id,
+        ]);
+
+        $permission->update([
+            'name' => $request->name,
+            'guard_name' => 'web' 
+        ]);
+
+        return redirect()->route('admin.permissions')->with('success', 'Permission updated successfully.');
     }
 
     public function destroy(Permission $permission)
     {
         $permission->delete();
-        return redirect()->route('admin.permission')->with('success', 'Permission deleted successfully');
+        return redirect()->route('admin.permissions')->with('success', 'Permission deleted successfully.');
     }
 }
-
-

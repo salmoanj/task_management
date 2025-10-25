@@ -17,8 +17,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $user = auth()->user();
 
-            // print_r($user);die;
-            return $user->role_id === 1
+            return $user->role_id === 3
                 ? redirect()->route('admin.dashboard')
                 : redirect()->route('employee.tasks');
         }

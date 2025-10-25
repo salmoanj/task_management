@@ -37,8 +37,6 @@
         @endforeach
     </table>
 
-    <div style="margin-top:20px;">
-        <a href="{{ route('logout') }}" style="color:red; text-decoration:none;">Logout</a>
-    </div>
+
 </div>
 @endsection

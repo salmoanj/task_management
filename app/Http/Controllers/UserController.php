@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Role;
+use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -25,18 +25,20 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'=>'required',
-            'email'=>'required|email|unique:users',
-            'password'=>'required|min:6',
-            'role_id'=>'required',
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required',
+            'role_id' => 'required', 
+        ]);
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'role_id' => $request->role_id,
         ]);
 
-        User::create([
-            'name'=>$request->name,
-            'email'=>$request->email,
-            'password'=>bcrypt($request->password),
-            'role_id'=>$request->role_id,
-        ]);
+        $role = Role::findById($request->role_id);
+        $user->assignRole($role);
 
         return redirect()->route('admin.users')->with('success', 'User created successfully');
     }
@@ -53,13 +55,15 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         $user->update([
-            'name'=>$request->name,
-            'email'=>$request->email,
-            'role_id'=>$request->role_id,
+            'name' => $request->name,
+            'email' => $request->email,
         ]);
 
+        $role = Role::findById($request->role_id);
+        $user->syncRoles($role); 
         return redirect()->route('admin.users')->with('success', 'User updated successfully');
     }
+
 
     public function destroy($id)
     {
