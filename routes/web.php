@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\PermissionController;
 
 Route::get('/', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
@@ -20,6 +23,22 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/admin/tasks', [AdminController::class, 'store'])->name('admin.tasks.store');
     Route::post('/admin/tasks/{task}/approve', [AdminController::class, 'approve'])->name('admin.tasks.approve');
     Route::post('/admin/tasks/{task}/reassign', [AdminController::class, 'reassign'])->name('admin.tasks.reassign');
+
+
+     Route::get('/users', [UserController::class, 'index'])->name('admin.users');
+    Route::get('/users/create', [UserController::class, 'create'])->name('admin.users.create');
+    Route::post('/users/store', [UserController::class, 'store'])->name('admin.users.store');
+    Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
+    Route::put('/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+
+    Route::resource('roles', RoleController::class)->names([
+        'index' => 'admin.roles',
+    ]);
+
+    Route::resource('permissions', PermissionController::class)->names([
+        'index' => 'admin.permission',
+    ]);
 });
 
 
